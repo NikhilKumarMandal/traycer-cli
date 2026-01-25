@@ -8,8 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model User {
   id            String    @id
   name          String
@@ -71,4 +69,19 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model DeviceCode {
+  id              String    @id
+  deviceCode      String
+  userCode        String
+  userId          String?
+  expiresAt       DateTime
+  status          String
+  lastPolledAt    DateTime?
+  pollingInterval Int?
+  clientId        String?
+  scope           String?
+
+  @@map("deviceCode")
 }
