@@ -4,12 +4,10 @@ import { createAuthClient } from "better-auth/client";
 import { deviceAuthorizationClient } from "better-auth/client/plugins";
 import chalk from "chalk";
 import { Command } from "commander";
-import fs from "fs/promises";
 import open from "open";
 import os from "os";
 import path from "path";
 import yoctoSpinner from "yocto-spinner";
-import * as z from "zod/v4";
 import dotenv from "dotenv";
 import { LoginActionOpts, loginOptionsSchema } from "./schema";
 import { getStoredToken, isTokenExpired, pollForToken, storeToken } from "./token";
@@ -19,7 +17,7 @@ import { getStoredToken, isTokenExpired, pollForToken, storeToken } from "./toke
 dotenv.config();
 
 
-const DEMO_URL = "http://localhost:4000";
+export const DEMO_URL = "http://localhost:4000";
 const CLIENT_ID = process.env.GITHUB_CLIENT_ID;
 export const CONFIG_DIR = path.join(os.homedir(), ".better-auth");
 export const TOKEN_FILE = path.join(CONFIG_DIR, "token.json");

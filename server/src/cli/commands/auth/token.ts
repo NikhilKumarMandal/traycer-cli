@@ -102,7 +102,7 @@ export async function pollForToken(
     const spinner = yoctoSpinner({ text: "", color: "cyan" });
     let dots = 0;
 
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const poll = async () => {
             dots = (dots + 1) % 4;
             spinner.text = chalk.gray(
