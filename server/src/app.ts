@@ -1,18 +1,18 @@
 import express, { Request, Response } from "express";
 // import { globalErrorHandler } from "./common/middleware/globalErrorHandler";
 import cookieParser from "cookie-parser";
-import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
-import cors from "cors"
+import { toNodeHandler } from "better-auth/node";
+import cors from "cors";
 import { auth } from "./lib/auth";
 const app = express();
-const port =  process.env.PORT ?? 4000
+const port = process.env.PORT ?? 4000;
 
 app.use(
   cors({
     origin: "http://localhost:3000",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  })
+  }),
 );
 
 app.all("/api/auth/*splat", toNodeHandler(auth));
@@ -29,7 +29,5 @@ app.get("/", (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`Traycer app listening on port ${port}`);
 });
-
-
 
 export default app;
