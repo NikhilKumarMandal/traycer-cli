@@ -5,6 +5,7 @@ import chalk from "chalk";
 import figlet from "figlet";
 
 import { Command } from "commander";
+import { login } from "./commands/auth/login";
 
 dotenv.config();
 
@@ -24,7 +25,10 @@ async function main() {
 
   program
     .version("0.0.1")
-      .description("Traycer CLI - Device Flow Authentication");
+    .description("Traycer CLI - Device Flow Authentication");
+  
+  
+  program.addCommand(login);
     
     program.action(() => {
         program.help();
