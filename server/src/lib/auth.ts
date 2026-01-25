@@ -14,13 +14,26 @@ export const auth = betterAuth({
     deviceAuthorization({
       expiresIn: "30m", // Device code expiration time
       interval: "5s", // Minimum polling interval
-
     }),
   ],
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      scope: ["read:user", "user:email"], 
+      mapProfileToUser: async (profile) => {
+        console.log(profile)
+        // You can add logic here to check if the email exists in the profile object
+        if (!profile.email) {
+          // You can throw an error or handle this case as needed (e.g., return a default value)
+          throw new Error("User email not provided by GitHub");
+        }
+        return {
+          email: profile.email,
+          name: profile.name,
+          // ... other fields
+        };
+      }
     },
   },
   logger: {
