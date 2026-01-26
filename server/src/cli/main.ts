@@ -7,6 +7,7 @@ import { Command } from "commander";
 import { login } from "./commands/auth/login";
 import { logout } from "./commands/auth/logout";
 import { whoami } from "./commands/auth/who-am-i";
+import { turnOn } from "./commands/ai/turnOn";
 
 dotenv.config();
 
@@ -32,6 +33,7 @@ async function main() {
   program.addCommand(login);
   program.addCommand(logout);
   program.addCommand(whoami);
+  program.addCommand(turnOn);
     
     program.action(() => {
         program.help();
