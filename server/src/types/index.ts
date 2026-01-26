@@ -1,3 +1,4 @@
+import { planGraphState } from "../lib/state";
 
 
 // Discriminated unions
@@ -22,3 +23,11 @@ export type StreamMessage =
             result: Record<string, any>;
         };
     }
+
+
+export type stateWithInterrupt = typeof planGraphState.State & {
+    __interrupt__: {
+        id: string,
+        value: string
+    }[]
+}
