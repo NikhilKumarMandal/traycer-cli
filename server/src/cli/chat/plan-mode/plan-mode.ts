@@ -1,14 +1,13 @@
 import { intro, text, isCancel, cancel } from "@clack/prompts";
 import yoctoSpinner from "yocto-spinner";
-import { HumanMessage } from "@langchain/core/messages";
 import { Command } from "@langchain/langgraph";
-import { displayMessages } from "./plan/displayMessages";
 import readline from "node:readline/promises";
-import { StreamMessage } from "../../types";
-import { graph } from "./plan/graph";
-import { graphState } from "./plan/state";
+import { graph } from "./graph";
+import { graphState } from "../../../lib/state";
+import { StreamMessage } from "../../../types";
 
-export async function startChat() {
+
+export async function PlanMode() {
     intro("🚀 Traycer AI CLI");
 
     // const messages: any[] = [];
