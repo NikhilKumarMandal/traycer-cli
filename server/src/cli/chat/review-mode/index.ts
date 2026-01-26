@@ -1,13 +1,13 @@
-import { intro} from "@clack/prompts";
+import { intro } from "@clack/prompts";
 import yoctoSpinner from "yocto-spinner";
 import { Command } from "@langchain/langgraph";
 import readline from "node:readline/promises";
 import { stateWithInterrupt, StreamMessage } from "../../../types";
-import { planGraph } from "./graphs";
+import { reviewGraph } from "./graph";
 
 
-export async function PlanMode() {
-    intro("🚀 Traycer AI CLI");
+export async function ReviewMode() {
+    intro("🚀 Traycer AI CLI ---- Review Mode");
 
     const rl = readline.createInterface({
         input: process.stdin,
@@ -41,7 +41,7 @@ export async function PlanMode() {
 
         spinner.start();
 
-        const stream = await planGraph.stream(
+        const stream = await reviewGraph.stream(
             input,
             {
                 streamMode: ["messages", "custom", "updates"],
