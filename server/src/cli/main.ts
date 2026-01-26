@@ -5,8 +5,8 @@ import chalk from "chalk";
 import figlet from "figlet";
 import { Command } from "commander";
 import { login } from "./commands/auth/login";
-// import { logout } from "./commands/auth/logout";
-// import { whoami } from "./commands/auth/who-am-i";
+import { logout } from "./commands/auth/logout";
+import { whoami } from "./commands/auth/who-am-i";
 
 dotenv.config();
 
@@ -22,7 +22,7 @@ async function main() {
 
   console.log(chalk.blue("\nA CLI based AI Tool \n"));
 
-  const program = new Command("traycer");
+  const program = new Command("traycers");
 
   program
     .version("0.0.1")
@@ -30,8 +30,8 @@ async function main() {
   
   
   program.addCommand(login);
-  // program.addCommand(logout);
-  // program.addCommand(whoami);
+  program.addCommand(logout);
+  program.addCommand(whoami);
     
     program.action(() => {
         program.help();

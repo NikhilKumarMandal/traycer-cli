@@ -23,9 +23,6 @@ app.all("/api/auth/*splat", toNodeHandler(auth));
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
-  res.json({ message: "Hello from order service service!" });
-});
 
 
 app.get("/api/me", async (req, res) => {
@@ -44,6 +41,12 @@ app.get("/api/me", async (req, res) => {
     return res.status(500).json({ error: "Failed to get session", details: error.message });
   }
 });
+
+app.get("/device", async (req, res) => {
+  const { user_code } = req.query; // Fixed: should be req.query, not req.params
+  res.redirect(`http://localhost:3000/device?user_code=${user_code}`);
+});
+
 
 // app.use(globalErrorHandler);
 

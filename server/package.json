@@ -3,15 +3,16 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/app.js",
-  "type": "module",
   "bin": {
-    "traycer": "./src/cli/main.ts"
+    "traycer": "./src/cli/main.js",
+    "traycers": "./dist/cli/main.js"
   },
   "scripts": {
-    "dev": "nodemon --experimental-strip-types src/app.ts",
-    "build": "npm run lint && tsc",
+    "dev": "nodemon  src/app.ts",
+    "build": "tsc",
     "lint": "eslint .",
-    "format": "prettier . --write"
+    "format": "prettier . --write",
+     "start": "node dist/app.js"
   },
   "keywords": [],
   "author": "",
