@@ -4,7 +4,9 @@ import yoctoSpinner from "yocto-spinner";
 import { getStoredToken } from "../auth/token";
 import { select } from "@clack/prompts";
 import { findFirst } from "../../../service/user.service";
-import { PlanMode } from "../../chat/plan-mode/plan-mode";
+import { PlanMode } from "../../chat/plan-mode";
+import { ReviewMode } from "../../chat/review-mode";
+
 
 
 const wakeUpAction = async () => {
@@ -57,9 +59,9 @@ const wakeUpAction = async () => {
         // case "Phases Mode":
         //     await startPhase();
         //     break;
-        // case "Review Mode":
-        //     await startReview();
-        //     break;
+        case "Review Mode":
+            await ReviewMode();
+            break;
     }
 };
 

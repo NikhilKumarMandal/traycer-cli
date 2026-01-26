@@ -128,7 +128,7 @@ function routeAfterRetry(state: typeof planGraphState.State) {
 
 
 
-export const graph = new StateGraph(planGraphState)
+export const planGraph = new StateGraph(planGraphState)
     .addNode("planner", plannerNode)
     .addNode("approve_plan", approvePlanNode)
     .addNode("coder", codingNode)

@@ -4,6 +4,12 @@ import fs from "fs";
 import path from "path";
 import { TavilySearch } from "@langchain/tavily";
 import { execSync } from "child_process";
+import simpleGit from "simple-git";
+import { ensureGitRepo } from "./utils";
+
+
+const git = simpleGit();
+
 
 
 export const webSearch = tool(
@@ -28,6 +34,8 @@ export const webSearch = tool(
         }),
     }
 );
+
+// Plans Tool
 
 export const searchFile = tool(
     async ({ repo }: { repo?: string }) => {
@@ -150,6 +158,98 @@ export const runCommand = tool(
         description: "Execute a shell command and return output",
         schema: z.object({
             command: z.string().describe("Shell command to execute"),
+        }),
+    }
+);
+
+
+
+
+
+
+
+// Reviews Tool
+
+export const listChangedFilesTool = tool(
+    async () => {
+        await ensureGitRepo();
+
+        const result = await git.diff(["--name-only"]);
+
+        const files = result
+            .split("\n")
+            .map(f => f.trim())
+            .filter(Boolean);
+
+        return {
+            changed_files: files,
+            count: files.length,
+        };
+    },
+    {
+        name: "list_changed_files",
+        description:
+            "List all files with uncommitted changes. Use this first to decide what to review.",
+        schema: z.object({}),
+    }
+);
+
+export const diffForFileTool = tool(
+    async ({ file }) => {
+        await ensureGitRepo();
+
+        const diff = await git.diff([file]);
+
+        if (!diff.trim()) {
+            return { file, diff: "No changes found." };
+        }
+
+        return { file, diff };
+    },
+    {
+        name: "get_diff_for_file",
+        description:
+            "Get the git diff for a specific file. Use only after selecting important files.",
+        schema: z.object({
+            file: z.string().describe("Path of the file to diff"),
+        }),
+    }
+);
+
+export const gitDiffTargetTool = tool(
+    async ({ target }) => {
+        await ensureGitRepo();
+
+        if (target === "uncommitted") {
+            return { diff: await git.diff() };
+        }
+
+        if (target === "main") {
+            await git.fetch(["origin", "main"]);
+            return { diff: await git.diff(["origin/main"]) };
+        }
+
+        if (target.startsWith("branch:")) {
+            const branchName = target.split(":")[1];
+
+            if (!branchName) {
+                throw new Error("Expected target format: branch:<branch-name>");
+            }
+
+            await git.fetch(["origin", branchName]);
+            return { diff: await git.diff([`origin/${branchName}`]) };
+        }
+
+        throw new Error("Invalid target. Use uncommitted | main | branch:<name>");
+    },
+    {
+        name: "git_diff_target",
+        description:
+            "Get git diff for uncommitted changes or compared against main or another branch.",
+        schema: z.object({
+            target: z
+                .string()
+                .describe("uncommitted | main | branch:<branch-name>"),
         }),
     }
 );
