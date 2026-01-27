@@ -359,3 +359,153 @@ Each list may be empty if not applicable.
 
 _Reminder: Carefully analyze and reason out the categorization before assigning each comment to a category. Always provide reasoning ahead of the assigned category and include all review comments in the final output.
 `.trim();
+
+export const PHASE_GENERATION_AGENT_PROMPT = `Break the specified software development task into clear, logical implementation phases as a numbered list.
+
+- Analyze the given task description.
+- Divide the implementation into sequential, well-defined phases. Each phase should focus on a logical sub-part of the problem, enabling an iterative build-up toward the full solution.
+- For each phase:
+  - Start with the main development action(s) as a short imperative statement.
+  - Optionally, add 1-3 bullet points listing sub-steps, relevant files, conventions, or standards, and dependencies.
+  - Ensure each phase logically follows from the previous one and enables progress toward the overall goal.
+
+Continue until all essential phases (from initialization and types to feature implementation, persistence, error handling, etc.) are captured. Do not skip intermediate steps; be precise and thorough.
+
+# Output Format
+
+- Return only a numbered list (1., 2., 3...) with each item as a distinct phase. Use concise yet precise language.
+- Substeps or requirements for each phase should be described with 1-3 indented bullets (–).
+- Do not wrap the output in code blocks.
+- Do not provide extraneous commentary or explanations.
+
+# Example
+
+**Input:**
+Task: Create a blogging platform backend with user accounts, posts, and comments.
+
+**Expected Output:**
+1. Define core data models and validation schemas
+   – Create user, post, and comment data models using TypeScript interfaces and Zod schemas
+   – Store models in src/models directory
+
+2. Set up database connection and configuration
+   – Implement database connection logic in src/db/index.ts
+   – Configure environment variables for database credentials
+
+3. Implement user account registration and authentication
+   – Develop registration and login endpoints in src/routes/auth.ts
+   – Use Bcrypt for password hashing, generate JWTs for authentication
+
+4. Create CRUD endpoints for posts
+   – Implement create, read, update, delete logic in src/routes/posts.ts
+   – Enforce user authentication and input validation
+
+5. Develop comment functionality linked to posts
+   – Build endpoints for adding, viewing, and deleting comments in src/routes/comments.ts
+   – Ensure only authenticated users can comment
+
+6. Add error handling and logging
+   – Implement centralized error middleware in src/middleware/error.ts
+   – Add request and error logging in src/middleware/logging.ts
+
+(For real outputs, actual implementation details and file paths should be filled in based on the specific task.)
+
+# Important Reminders (repeat at end on long prompts)
+- Output strictly as a numbered list with sub-bullets for each phase as needed.
+- Each item represents one logical implementation phase, ordered for incremental development.
+- Include all key steps; don’t skip intermediate phases.
+- Use concise, imperative phrasing.
+
+(Task: Break down a given implementation into sequential phases, output as a numbered list with possible sub-bullets per phase. Be precise, logical, and follow the output formatting; persist until all phases are captured.)`.trim();
+
+
+export const YOLO_PLANNED_AGENT_PROMPT = `Generate a detailed technical plan for addressing a user's goal in a codebase by reasoning step-by-step before producing recommendations. The plan must include:
+
+- **File Analysis & Structure**: Analyze the current project structure. Identify important files, unused or empty files, and give a brief assessment of organization.
+- **Symbol References**: Note key classes, functions, exported variables, config points, and other important code symbols involved (with file references if possible), both existing and those that will need to be introduced.
+- **Implementation Steps**: Provide a series of specific, logical steps to achieve the user's requested functionality, written in technical language and ordered from setup through to completion. Ensure each step is justified by the preceding reasoning and is actionable for a developer.
+
+Before outlining any conclusions or recommendations, always perform a clear, step-by-step reasoning process (“Observations” and “Approach” sections, for example). EXPLICITLY: Do not put action plans or conclusions before reasoning—always present reasoning components first, followed by conclusions/action lists. Always use “Observations” (state analysis of the current state of the codebase) and then “Approach” (describe the technical strategy for filling identified gaps), before listing “Implementation Steps” (the final call to action).
+
+Persist until all objectives are met. Think internally step-by-step before producing answers.
+
+## Output Format
+
+Structure your output in clear sections using markdown headers and indentation. Use the following format:
+
+### Plan Specification
+
+#### Observations
+[Detailed reasoning about the current state of the codebase, constraints, and key details relevant to the user’s request.]
+
+#### Approach
+[Describe the high-level approach and rationale, referencing Observations as support. Detail libraries, patterns, and major architectural choices to be used.]
+
+#### File Analysis & Structure
+[Explicit run-down of the project’s directory layout with purpose for each relevant file/folder. If files are missing or need to be created, indicate that and their roles.]
+---
+
+## Example
+
+### User query
+i want setup authentication using jwt.
+
+### Plan Specification
+
+#### Observations
+The codebase is a Bun-based TypeScript project using LangChain and LangGraph for AI agent functionality. Currently, there is no web server framework, authentication system, or API routes implemented. The project structure is minimal, with mostly empty source files in the "src" directory. Dependencies include "@langchain/core", "@langchain/langgraph", "@langchain/openai", and "zod" for validation.
+
+#### Approach
+Since no web framework exists, the plan will establish a complete JWT authentication system from scratch.We'll use Hono (optimized for Bun) as the web framework, implement JWT-based authentication with access and refresh tokens, create user management endpoints, and add authentication middleware to protect routes. The implementation will leverage existing "zod" for validation and maintain TypeScript type safety throughout.
+
+#### File Analysis & Structure
+        - "src/"
+        - "index.ts": entry point(currently minimal; will initialize app / server)
+    - "routes/"(not present; to be created): contains authentication routes
+        - "utils/" (may need to be created): helper functions for JWT and password hashing
+            - "models/"(optional): user schema / model if persistence planned
+                - "types/"": type definitions (existing or to be added)
+Files to be added / modified explicitly as below.
+
+#### Symbol References
+        - "src/routes/auth.routes.ts": route handlers for register, login, refresh, logout
+            - "src/utils/jwt.ts": utility functions for generating and verifying JWTs
+                - "src/utils/password.ts": hashPassword, comparePassword for bcrypt integration
+                    - "src/types/user.ts": User interface / type
+                        - "zod" schemas for request validation in "auth.routes.ts"
+                            - "hono" app instance in "src/index.ts"
+
+#### Implementation Steps
+    1. ** Install Required Dependencies **
+        - Add: "hono", "jsonwebtoken", "@types/jsonwebtoken", "bcrypt", "@types/bcrypt"
+    2. ** Setup Project Structure **
+        - Create "routes/", "utils/", "types/" directories if they do not exist.
+3. ** Create JWT Utility Functions **
+        - Implement functions in "src/utils/jwt.ts" for creating and verifying both access and refresh tokens.
+4. ** Password Hashing Utilities **
+        - In"src/utils/password.ts", add"hashPassword" and "comparePassword" using"bcrypt".
+5. ** User Type Definitions **
+        - Define a "User" interface / type in "src/types/user.ts".
+6. ** Authentication Routes **
+        - Create "src/routes/auth.routes.ts" with the following endpoints:
+    - "POST /auth/register": register new user, validate using "zod", hash password, create user, generate tokens.
+        - "POST /auth/login": authenticate user, check password, issue tokens.
+        - "POST /auth/refresh": issue new access token from refresh token.
+        - "POST /auth/logout": invalidate refresh token(if storing, else client - side removal).
+    7. ** Validation Schemas **
+        - Define request validation schemas using "zod" in "auth.routes.ts" or separate file.
+8. ** Middleware for Route Protection **
+        - Implement JWT verification middleware in "src/utils/jwt.ts".Apply to protected routes.
+9. ** App Initialization **
+        - In"src/index.ts", set up Hono instance, register routes, and start the server.
+10. ** Testing **
+        - Write test cases for registration, login, token refresh, and protected endpoints.
+
+---
+
+        (For much larger / plural systems, extend File Analysis with deeper trees, more cross - references, and possible dependency diagrams.)
+
+    ---
+
+** Important:** Always list step - by - step reasoning and observations before recommendations.Persist until all plan elements are thoroughly addressed.Output must be formatted in organized markdown sections as described above.
+`.trim();
