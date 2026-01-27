@@ -1,4 +1,4 @@
-import { interrupt } from "@langchain/langgraph";
+import { interrupt, MemorySaver, StateGraph } from "@langchain/langgraph";
 import { yoloGraphState } from "../../../lib/state";
 import { Phase } from "../../../types";
 import { checkIntent, clarifyIntent, codingAgent, phaseGeneration, phasePlanningAgent, reVerificationAgent, verificationAgent } from "./agents";
@@ -251,3 +251,40 @@ function routeAfterReVerification(state: typeof yoloGraphState.State) {
     // fallback
     return "coding";
 };
+
+
+
+export const yoloGraph = new StateGraph(yoloGraphState)
+    .addNode("classify", classifyNode)
+    .addNode("clarifyIntent", clarifyIntentNode)
+    .addNode("phaseGeneration", phaseGenerationNode)
+    .addNode("phasePlanning", phasePlanning)
+    .addNode("coding", codingNode)
+    .addNode("verificationNode", verificationNode)
+    .addNode("reVerification", reVerificationNode)
+    .addNode("nextPhase", nextPhaseNode)
+    .addEdge("__start__", "classify")
+    .addConditionalEdges("classify", checkIntentIs, {
+        phaseGeneration: "phaseGeneration",
+        clarifyIntent: "clarifyIntent"
+    })
+    .addEdge("clarifyIntent", "phaseGeneration")
+    .addEdge("phaseGeneration", "phasePlanning")
+    .addEdge("phasePlanning", "coding")
+    .addEdge("coding", "verificationNode")
+    .addEdge("verificationNode", "reVerification")
+    .addConditionalEdges("reVerification", routeAfterReVerification, {
+        coding: "coding",
+        nextPhase: "nextPhase"
+    })
+    .addConditionalEdges("nextPhase", (state) => {
+        if (state.done) return "__end__";
+        return "phasePlanning";
+    }, {
+        phasePlanning: "phasePlanning",
+        __end__: "__end__"
+    })
+    .compile({
+        checkpointer: new MemorySaver(),
+    })
+    .withConfig({ recursionLimit: 70 })
