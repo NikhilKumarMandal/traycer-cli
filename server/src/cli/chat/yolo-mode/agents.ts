@@ -1,8 +1,21 @@
 
 import { groq, llm } from "../../../lib/model";
-import { PHASE_GENERATION_AGENT_PROMPT, YOLO_PLANNED_AGENT_PROMPT } from "../../../lib/prompts";
+import { CHECK_INTENT_AGENT_PROMPT, CLARIFY_INTENT_AGENT_PROMPT, PHASE_GENERATION_AGENT_PROMPT, YOLO_PLANNED_AGENT_PROMPT } from "../../../lib/prompts";
 import { searchFile,webSearch } from "../../../lib/tools";
 import { createAgent } from "langchain";
+
+
+export const checkIntent = createAgent({
+    model: groq,
+    tools: [webSearch],
+    systemPrompt: CHECK_INTENT_AGENT_PROMPT,
+});
+
+export const clarifyIntent = createAgent({
+    model: groq,
+    tools: [webSearch],
+    systemPrompt: CLARIFY_INTENT_AGENT_PROMPT
+})
 
 
 export const phaseGeneration = createAgent({

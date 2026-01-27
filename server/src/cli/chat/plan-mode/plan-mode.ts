@@ -10,17 +10,17 @@
 // export async function PlanMode() {
 //     intro("🚀 Traycer AI CLI");
 
-//     // const messages: any[] = [];
-//     // let awaitingApproval = false;
+    // const messages: any[] = [];
+    // let awaitingApproval = false;
 
-//     // while (true) {
-//     //     const spinner = yoctoSpinner({ text: "Thinking..." });
+    // while (true) {
+    //     const spinner = yoctoSpinner({ text: "Thinking..." });
 
-//     //     // ---------------- RESUME INTERRUPT ----------------
-//     //     if (awaitingApproval) {
-//     //         const approval = await text({
-//     //             message: "Approve the plan? (yes / no)",
-//     //         });
+        // ---------------- RESUME INTERRUPT ----------------
+    //     if (awaitingApproval) {
+    //         const approval = await text({
+    //             message: "Approve the plan? (yes / no)",
+    //         });
 
 //     //         if (isCancel(approval)) {
 //     //             cancel("Bye!");

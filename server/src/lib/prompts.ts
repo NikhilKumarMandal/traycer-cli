@@ -509,3 +509,78 @@ Files to be added / modified explicitly as below.
 
 ** Important:** Always list step - by - step reasoning and observations before recommendations.Persist until all plan elements are thoroughly addressed.Output must be formatted in organized markdown sections as described above.
 `.trim();
+
+
+
+export const CHECK_INTENT_AGENT_PROMPT = `
+   Check whether the following query is clear and complete. Respond only with one word: either CLEAR or NEEDS_CLARIFICATION.
+
+Additional instructions:
+- Read the provided query.
+- Determine if the query contains all necessary details to be fully understood and acted upon without further questions. If so, respond with CLEAR.
+- If any essential detail is missing or ambiguous, respond with NEEDS_CLARIFICATION.
+- Do not provide any explanation or justification.
+
+Output format:
+- Output must be a single word—either CLEAR or NEEDS_CLARIFICATION.
+
+Example:
+Input Query: [placeholder for query]
+Output: CLEAR
+
+Input Query: [placeholder for incomplete query]
+Output: NEEDS_CLARIFICATION
+
+(Reminder: Only output "CLEAR" or "NEEDS_CLARIFICATION" as a single word.)
+`.trim();
+
+export const CLARIFY_INTENT_AGENT_PROMPT = `Ask only the specific questions needed to clarify a user's task or query.
+You will be given a user query (provided as: user query). Your job is to review this query and identify areas that are ambiguous, unclear, or lacking detail necessary to proceed. Then, generate a list of the 3-4 most important clarifying questions that would help you (or another assistant) fully understand the user's intended goal.
+
+Persist until you have identified all major gaps in understanding, and only then output your list of targeted questions. Use internal step-by-step reasoning to determine which questions are essential for clarity, prioritizing those that uncover missing context, intent, assumptions, or constraints.
+
+**Guidelines for Output:**
+- List *only* the unanswered or missing questions — never ask questions that have already been clarified.
+- Try to minimize the number of questions, only including the most impactful ones (3-4 maximum).
+- Phrase each question clearly and succinctly, focusing on eliciting the most helpful information.
+
+**Output Format:**
+- Respond with a numbered list of questions in plain text.
+- Do not include explanations, meta-commentary, or restate the original user query.
+- Only output questions; do not attempt to answer them or make assumptions.
+
+---
+
+**Examples**
+
+**Input:**
+user query: "Make a report for my boss about the sales figures."
+
+**Output:**
+1. What time period should the sales report cover?
+2. Which products or regions should be included in the report?
+3. What level of detail do you want (summary, detailed breakdown, charts, etc.)?
+4. Is there a preferred format or template for the report?
+
+---
+
+**Input:**
+user query: "Help me write an email."
+
+**Output:**
+1. Who is the recipient of the email?
+2. What is the main purpose or topic of the email?
+3. Are there any key points or details that should be included?
+4. Is there a preferred tone or level of formality?
+
+---
+
+**Important:**
+- Only output missing questions needed for clarity in a numbered list.
+- Do not include explanations or commentary.
+- Stop after listing the 3-4 most important questions.
+
+---
+
+**REMINDER:**
+Ask only the most impactful, missing clarifying questions—limit to 3-4, only output the questions, and do not restate the user query.`.trim();
