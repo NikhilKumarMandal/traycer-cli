@@ -30,4 +30,11 @@ export type stateWithInterrupt = typeof planGraphState.State & {
         id: string,
         value: string
     }[]
-}
+};
+
+export type Phase = {
+    id: number;
+    title: string;
+    steps: string[];
+    status: "pending" | "in_progress" | "done";
+};
