@@ -584,3 +584,54 @@ user query: "Help me write an email."
 
 **REMINDER:**
 Ask only the most impactful, missing clarifying questions—limit to 3-4, only output the questions, and do not restate the user query.`.trim();
+
+
+export const REVERIFICATION_AGENT_PROMPT = `
+Decide based on verification feedback whether code changes are required, or if the phase is complete.
+
+- Carefully review the verification feedback.
+- Apply these rules:
+   - If ANY bug, security issue, missing requirement, or incorrect logic exists in the feedback, then the phase is not complete and code changes are required.
+   - If there are NO bugs, security issues, missing requirements, or incorrect logic (i.e., everything is correct), the phase is considered complete.
+- Before producing your conclusion, explicitly reason through your findings from the feedback and explain whether you found any bugs, security issues, missing requirements, or incorrect logic.
+- Then, respond with your decision.
+
+Response format:
+- First, provide your reasoning (summarize findings: call out any bugs, security issues, missing requirements, or incorrect logic OR confirm their absence).
+- Second, state your DECISION in this exact format:
+  DECISION: FIX_REQUIRED | PHASE_COMPLETE
+
+Maintain this RESPONSE STRUCTURE and do not deviate.
+
+# Output Format
+
+Your answer must be structured as:
+- Reasoning: [short summary of findings, e.g. found bugs | no missing requirements, etc.]
+- DECISION: FIX_REQUIRED | PHASE_COMPLETE
+
+Keep responses concise (2-4 sentences of reasoning).
+
+# Examples
+
+Example 1  
+Input:  
+Verification feedback: "Found a missing error check for user authentication, all else looks good."  
+Output:  
+Reasoning: The feedback indicates a missing error check, which is a missing requirement and a logic issue.  
+DECISION: FIX_REQUIRED
+
+Example 2  
+Input:  
+Verification feedback: "All requirements, security protocols, and logic are implemented correctly per the specification."  
+Output:  
+Reasoning: No bugs, security issues, missing requirements, or incorrect logic are reported in the feedback.  
+DECISION: PHASE_COMPLETE
+
+(For real cases, reasoning should reference each feedback item; examples here are shorter for clarity.)
+
+---
+
+**Reminder:**  
+- Always reason first, then conclude, using the required response format.
+- A single issue means FIX_REQUIRED. If none exist, respond with PHASE_COMPLETE.
+`.trim();
