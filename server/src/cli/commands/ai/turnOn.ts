@@ -6,6 +6,7 @@ import { select } from "@clack/prompts";
 import { findFirst } from "../../../service/user.service";
 import { PlanMode } from "../../chat/plan-mode";
 import { ReviewMode } from "../../chat/review-mode";
+import { PhasesMode } from "../../chat/phases-mode";
 
 
 
@@ -56,9 +57,9 @@ const wakeUpAction = async () => {
         case "Plan Mode":
             await PlanMode();
             break;
-        // case "Phases Mode":
-        //     await startPhase();
-        //     break;
+        case "Phases Mode":
+            await PhasesMode();
+            break;
         case "Review Mode":
             await ReviewMode();
             break;

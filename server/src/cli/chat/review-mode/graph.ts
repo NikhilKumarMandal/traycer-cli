@@ -123,5 +123,5 @@ export const reviewGraph = new StateGraph(reviewGraphState)
     .compile({
         checkpointer: new MemorySaver(),
     })
-    .withConfig({ recursionLimit: 69 })
+    .withConfig({ recursionLimit: 70 })
 
