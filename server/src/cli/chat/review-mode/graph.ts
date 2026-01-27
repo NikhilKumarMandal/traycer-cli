@@ -110,13 +110,13 @@ export const reviewGraph = new StateGraph(reviewGraphState)
     .addNode("analysis_agent", analysisNode)
     .addNode("findIssue_agent", findIssueNode)
     .addNode("generateReport_agent", generateReportNode)
-    .addNode("approved", approveCodingAgentNode)
+    .addNode("approvedCoding", approveCodingAgentNode)
     .addNode("coding",codingNode)
     .addEdge("__start__", "analysis_agent")
     .addEdge("analysis_agent", "findIssue_agent")
     .addEdge("findIssue_agent", "generateReport_agent")
-    .addEdge("generateReport_agent", "approved")
-    .addConditionalEdges("approved", routeAfterCodingAgentApproval, {
+    .addEdge("generateReport_agent", "approvedCoding")
+    .addConditionalEdges("approvedCoding", routeAfterCodingAgentApproval, {
         coding: "coding",
         [END]: END,
     })
