@@ -254,7 +254,7 @@ function routeAfterReVerification(state: typeof yoloGraphState.State) {
 
 
 
-export const yoloGraph = new StateGraph(yoloGraphState)
+export const phasesGraph = new StateGraph(yoloGraphState)
     .addNode("classify", classifyNode)
     .addNode("clarifyIntent", clarifyIntentNode)
     .addNode("phaseGeneration", phaseGenerationNode)
