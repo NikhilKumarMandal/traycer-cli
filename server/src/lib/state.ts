@@ -22,7 +22,20 @@ export const reviewGraphState = Annotation.Root({
     findIssue: Annotation<string>(),
     generateReport: Annotation<string>(),
     approved: Annotation<boolean | undefined>(),
-})
+});
+
+export const yoloGraphState = Annotation.Root({
+    ...MessagesAnnotation.spec,
+
+    intentStatus: Annotation<"CLEAR" | "NEEDS_CLARIFICATION">(),
+    userQuery: Annotation<string>(),
+    phases: Annotation<string[]>(),
+    currentPhaseIndex: Annotation<number>(),
+    completedPhases: Annotation<number[]>(),
+    phasePlan: Annotation<string>(),
+    implementation: Annotation<string>(),
+    questions: Annotation<string>(),
+});
 
 
 
