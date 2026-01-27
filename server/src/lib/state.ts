@@ -35,9 +35,10 @@ export const yoloGraphState = Annotation.Root({
     phasePlan: Annotation<string>(),
     implementation: Annotation<string>(),
     questions: Annotation<string>(),
+    reVerificationDecision: Annotation<string>(),
+    reVerificationAttempts: Annotation<number>(),
+    done: Annotation<boolean>(),
 });
-
-
 
 export type GraphState = typeof planGraphState.State;
 
