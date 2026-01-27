@@ -160,6 +160,6 @@ export const planGraph = new StateGraph(planGraphState)
     .compile({
         checkpointer: new MemorySaver(),
     })
-    .withConfig({ recursionLimit: 69 })
+    .withConfig({ recursionLimit: 70 })
 
 
