@@ -1,5 +1,4 @@
-import express, { Request, Response } from "express";
-// import { globalErrorHandler } from "./common/middleware/globalErrorHandler";
+import express from "express";
 import cookieParser from "cookie-parser";
 import { fromNodeHeaders, toNodeHandler } from "better-auth/node";
 import cors from "cors";
@@ -48,7 +47,6 @@ app.get("/device", async (req, res) => {
 });
 
 
-// app.use(globalErrorHandler);
 
 app.listen(port, () => {
   console.log(`Traycer app listening on port ${port}`);
