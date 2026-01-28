@@ -1,5 +1,5 @@
 import { createAgent } from "langchain";
-import { llm } from "../../../lib/model";
+import { llm, model } from "../../../lib/model";
 import { diffForFileTool, gitDiffTargetTool, listChangedFilesTool, searchFile } from "../../../lib/tools";
 import { ANALYSIS_AGENT_PROMPT, FIND_ISSUE_AGENT_PROMPT } from "../../../lib/prompts";
 
@@ -11,7 +11,7 @@ export const analysisAgent = createAgent({
 });
 
 export const findIssueAgent = createAgent({
-    model: llm,
+    model: model,
     tools: [searchFile],
     systemPrompt: FIND_ISSUE_AGENT_PROMPT,
 })
