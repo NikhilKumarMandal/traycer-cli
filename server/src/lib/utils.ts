@@ -1,7 +1,7 @@
 
 import simpleGit from "simple-git";
 import { Phase } from "../types";
-
+import { writeFileSync } from 'node:fs';
 
 const git = simpleGit();
 
@@ -45,3 +45,15 @@ export function parsePhases(text: string): Phase[] {
     if (current) phases.push(current);
     return phases;
 };
+
+
+
+
+
+export async function printGraph(agent: any, graphPath: any) {
+    const drawableGraphGraphState = await agent.getGraph();
+    const graphStateImage = await drawableGraphGraphState.drawMermaidPng();
+    const graphStateArrayBuffer = await graphStateImage.arrayBuffer();
+
+    writeFileSync(graphPath, new Uint8Array(graphStateArrayBuffer));
+}
