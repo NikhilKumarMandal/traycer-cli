@@ -1,7 +1,7 @@
 import { createAgent } from "langchain";
 import { llm, model } from "../../../lib/model";
-import { createFile, deleteFile, runCommand, searchFile,updateFile,webSearch } from "../../../lib/tools";
-import { CODING_AGENT_PROMPT, PLANNED_AGENT_PROMPT, VERIFICATION_AGENT_PROMPT } from "../../../lib/prompts";
+import { createFile, runCommand, searchFile,webSearch } from "../../../lib/tools";
+import { CODING_AGENT_PROMPT, GENERATE_REPORT_AGENT_PROMPT, PLANNED_AGENT_PROMPT } from "../../../lib/prompts";
 
 
 
@@ -13,12 +13,12 @@ export const plannedAgent = createAgent({
 
 export const codingAgent = createAgent({
     model: model,
-    tools: [createFile, updateFile, searchFile, runCommand, deleteFile],
+    tools: [createFile, searchFile, runCommand],
     systemPrompt: CODING_AGENT_PROMPT,
 })
 
 export const verificationAgent = createAgent({
     model: model,
     tools: [searchFile],
-    systemPrompt: VERIFICATION_AGENT_PROMPT
+    systemPrompt: GENERATE_REPORT_AGENT_PROMPT
 });

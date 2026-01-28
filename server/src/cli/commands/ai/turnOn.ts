@@ -11,26 +11,27 @@ import { PhasesMode } from "../../chat/phases-mode";
 
 
 const wakeUpAction = async () => {
-    const token = await getStoredToken();
+    // const token = await getStoredToken();
 
-    if (!token?.access_token) {
-        console.log(chalk.red("Not authenticated. Please login."));
-        return;
-    }
+    // if (!token?.access_token) {
+    //     console.log(chalk.red("Not authenticated. Please login."));
+    //     return;
+    // }
 
-    const spinner = yoctoSpinner({ text: "Fetching User Information..." });
-    spinner.start();
+    // const spinner = yoctoSpinner({ text: "Fetching User Information..." });
+    // spinner.start();
 
-    const user = await findFirst(token?.access_token);
+    // const user = await findFirst(token?.access_token);
 
-    spinner.stop();
+    // spinner.stop();
 
-    if (!user) {
-        console.log(chalk.red("User not found."));
-        return;
-    }
+    // if (!user) {
+    //     console.log(chalk.red("User not found."));
+    //     return;
+    // }
 
-    console.log(chalk.green(`\nWelcome back, ${user.name}!\n`));
+    // console.log(chalk.green(`\nWelcome back, ${user.name}!\n`));
+     console.log(chalk.green(`\nHello 👋🏽!\n`));
 
     const choice = await select({
         message: "Select an option:",
