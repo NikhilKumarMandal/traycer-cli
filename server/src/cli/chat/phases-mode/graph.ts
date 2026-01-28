@@ -2,7 +2,6 @@ import { interrupt, MemorySaver, StateGraph } from "@langchain/langgraph";
 import { yoloGraphState } from "../../../lib/state";
 import { Phase } from "../../../types";
 import { checkIntent, clarifyIntent, codingAgent, phaseGeneration, phasePlanningAgent, reVerificationAgent, verificationAgent } from "./agents";
-//import readline from "node:readline/promises";
 import { parsePhases } from "../../../lib/utils";
 import { HumanMessage } from "langchain";
 import chalk from "chalk";
@@ -55,7 +54,6 @@ async function phaseGenerationNode(state: typeof yoloGraphState.State) {
         const answer = interrupt(
             "Please answer the clarification questions above in a single response."
         );
-        // query = await rl.question("You: ");
 
 
         finalPrompt = `
@@ -68,7 +66,7 @@ Clarification questions:
 ${state.questions}
 
 User answers:
-// 
+${answer}
 
 Use ALL of this information to generate clear phases.
 `;
@@ -106,7 +104,7 @@ Generate clear, sequential implementation phases.
 async function phasePlanning(state: typeof yoloGraphState.State) {
     console.log(chalk.blue("\n -------------- ----- ----------------- \n"));
     
-    console.log(chalk.yellow("\n phase: \n",state.currentPhaseIndex));
+    console.log(chalk.yellow("\n phase: ",state.currentPhaseIndex));
 
 
     const phase = state.phases[state.currentPhaseIndex!] as unknown as Phase;
@@ -114,9 +112,9 @@ async function phasePlanning(state: typeof yoloGraphState.State) {
 
 
     const phaseText = `
-Title: ${phase.title}
+Title: ${phase?.title}
 Steps:
-${phase.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
+${phase?.steps?.map((s, i) => `${i + 1}. ${s}`).join("\n")}
 `;
 
 
