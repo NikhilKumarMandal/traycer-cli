@@ -2,9 +2,10 @@ import { interrupt, MemorySaver, StateGraph } from "@langchain/langgraph";
 import { yoloGraphState } from "../../../lib/state";
 import { Phase } from "../../../types";
 import { checkIntent, clarifyIntent, codingAgent, phaseGeneration, phasePlanningAgent, reVerificationAgent, verificationAgent } from "./agents";
-import readline from "node:readline/promises";
+//import readline from "node:readline/promises";
 import { parsePhases } from "../../../lib/utils";
 import { HumanMessage } from "langchain";
+import chalk from "chalk";
 
 
 
@@ -46,6 +47,8 @@ async function clarifyIntentNode(state: typeof yoloGraphState.State) {
 };
 
 async function phaseGenerationNode(state: typeof yoloGraphState.State) {
+    console.log(chalk.blue("\n -------------- Phase Generation ----------------- \n"));
+
     let finalPrompt = "";
 
     if (state.intentStatus === "NEEDS_CLARIFICATION") {
@@ -101,10 +104,14 @@ Generate clear, sequential implementation phases.
 }
 
 async function phasePlanning(state: typeof yoloGraphState.State) {
-    console.log("-------------------------------------------")
-    console.log("-------------------------------------------");
+    console.log(chalk.blue("\n -------------- ----- ----------------- \n"));
+    
+    console.log(chalk.yellow("\n phase: \n",state.currentPhaseIndex));
+
 
     const phase = state.phases[state.currentPhaseIndex!] as unknown as Phase;
+
+
 
     const phaseText = `
 Title: ${phase.title}
@@ -129,9 +136,11 @@ ${phase.steps.map((s, i) => `${i + 1}. ${s}`).join("\n")}
 };
 
 async function codingNode(state: typeof yoloGraphState.State) {
-    console.log("-----------------------------------------------------");
-    console.log("Agent Mode: Coding...");
-    console.log("-----------------------------------------------------");
+    console.log(chalk.blue("\n --------------------------------- \n"));
+
+    console.log(chalk.yellow("\n Agent Mode: Coding... \n"));
+
+    console.log(chalk.blue("\n --------------------------------- \n"));
 
     let inputMessages;
 
@@ -170,7 +179,7 @@ async function codingNode(state: typeof yoloGraphState.State) {
         messages: inputMessages
     } as any)
 
-    console.log("------")
+    console.log(chalk.blue("\n --------------------------------- \n"));
     return {
         //@ts-ignore
         code: response.messages?.at(-1)?.content
@@ -179,7 +188,7 @@ async function codingNode(state: typeof yoloGraphState.State) {
 
 async function verificationNode(state: typeof yoloGraphState.State) {
 
-    console.log("verification started....")
+    console.log(chalk.yellow("\n Verification started....  \n"));
 
     const response = await verificationAgent.invoke({
         messages: state.phasePlan
@@ -192,6 +201,9 @@ async function verificationNode(state: typeof yoloGraphState.State) {
 };
 
 async function reVerificationNode(state: typeof yoloGraphState.State) {
+
+    console.log(chalk.yellow("\n Re-verification started....  \n"));
+
     const response = await reVerificationAgent.invoke({
         messages: state.verification
     }as any);

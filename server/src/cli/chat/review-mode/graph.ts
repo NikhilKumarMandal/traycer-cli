@@ -5,6 +5,8 @@ import { GENERATE_REPORT_AGENT_PROMPT } from "../../../lib/prompts";
 import { llm } from "../../../lib/model";
 import { END, interrupt, MemorySaver, StateGraph } from "@langchain/langgraph";
 import { codingAgent } from "../plan-mode/agents";
+import chalk from "chalk";
+
 
 
 
@@ -21,7 +23,7 @@ async function analysisNode(state: typeof reviewGraphState.State) {
 };
 
 async function findIssueNode(state: typeof reviewGraphState.State) {
-    console.log("-------------- find issue ---------------------");
+    console.log(chalk.blue("\n -------------- find issue ----------------- \n"));
 
     const response = await findIssueAgent.invoke({
         messages: state.analysis
@@ -37,7 +39,7 @@ async function findIssueNode(state: typeof reviewGraphState.State) {
 
 async function generateReportNode(state: typeof reviewGraphState.State) {
 
-    console.log("----------  Generate Report -----------");
+    console.log(chalk.blue("\n -------------- Generate Report ----------------- \n"));
 
     const llmWithStructure = llm.withStructuredOutput(CodeReviewSchema);
 
@@ -63,9 +65,11 @@ async function approveCodingAgentNode() {
 };
 
 async function codingNode(state: typeof reviewGraphState.State) {
-    console.log("-----------------------------------------------------");
-    console.log("Agent Mode: Coding...");
-    console.log("-----------------------------------------------------");
+    console.log(chalk.blue("\n --------------------------------- \n"));
+
+    console.log(chalk.yellow("\n Agent Mode: Coding... \n"));
+
+    console.log(chalk.blue("\n --------------------------------- \n"));
 
     let inputMessages: any;
 
@@ -92,7 +96,7 @@ async function codingNode(state: typeof reviewGraphState.State) {
         messages: inputMessages
     } as any)
 
-    console.log("---------------------------------")
+    console.log(chalk.blue("\n --------------------------------- \n"));
     return {
         // @ts-ignore
         code: response.messages?.at(-1)?.content
@@ -124,4 +128,3 @@ export const reviewGraph = new StateGraph(reviewGraphState)
         checkpointer: new MemorySaver(),
     })
     .withConfig({ recursionLimit: 70 })
-
