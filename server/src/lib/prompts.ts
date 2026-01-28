@@ -96,10 +96,18 @@ Files to be added / modified explicitly as below.
     ---
 
 ** Important:** Always list step - by - step reasoning and observations before recommendations.Persist until all plan elements are thoroughly addressed.Output must be formatted in organized markdown sections as described above.
+
+do not write code give the proper plan...
 `.trim();
 
 
-export const CODING_AGENT_PROMPT = `Create a complete, production-ready application:
+export const CODING_AGENT_PROMPT = 
+`
+Create a complete, production-ready application:
+
+you have do thing in exists folder don't create new folder you have fileSearch(tool) you have creating thing in existing folder (RULES)
+
+install dependeny using runCommand(only install dependency RULES)
 
 CRITICAL REQUIREMENTS:
 1. Generate ALL files needed for the application to run
@@ -275,6 +283,8 @@ Analyze code for bugs, performance, security, and clarity, giving reasoning firs
 
 
 export const GENERATE_REPORT_AGENT_PROMPT = `
+You will get the plan using this plan coding agent write code seeing the plan and you have search_file(tool) where agent changes code base on the plan and code make report 
+
 Generate a concise and organized report by categorizing review comments into four key categories to assist in understanding and prioritizing issues:
 
 - **Bug**: Functional issues, logic errors, or incorrect implementations that require fixing.

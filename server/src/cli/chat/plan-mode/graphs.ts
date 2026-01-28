@@ -1,11 +1,12 @@
 import { END, interrupt, MemorySaver, START, StateGraph } from "@langchain/langgraph";
 import { planGraphState } from "../../../lib/state";
 import { codingAgent, plannedAgent, verificationAgent } from "./agents";
+import chalk from "chalk";
 
 
 
 async function plannerNode(state: typeof planGraphState.State) {
-    console.log("Start planning...")
+    console.log(chalk.green("\nA Start planning... \n"));
     const response = await plannedAgent.invoke({
         messages: state.messages,
     } as any);
@@ -25,15 +26,18 @@ async function approvePlanNode() {
 };
 
 async function codingNode(state: typeof planGraphState.State) {
-    console.log("-----------------------------------------------------");
-    console.log("Agent Mode: Coding...");
-    console.log("-----------------------------------------------------");
+    console.log(chalk.blue("\n --------------------------------- \n"));
+
+    console.log(chalk.yellow("\n Agent Mode: Coding... \n"));
+
+    console.log(chalk.blue("\n --------------------------------- \n"));
+
 
     let inputMessages: any;
 
     if (!state.verification) {
         inputMessages = [
-            ...state.plan!,
+            state.plan,
             {
                 role: "system",
                 content: "MODE: IMPLEMENT THE PLAN ABOVE EXACTLY"
@@ -60,13 +64,13 @@ async function codingNode(state: typeof planGraphState.State) {
         ];
     }
 
-    console.log("Agent Mode: Generating your application...");
+    console.log(chalk.blue("\n Agent Mode: Generating your application... \n"));
 
     const response = await codingAgent.invoke({
         messages: inputMessages
     } as any)
 
-    console.log("---------------------------------")
+    console.log(chalk.blue("\n --------------------------------- \n"));
     return {
         // @ts-ignore
         code: response.messages?.at(-1)?.content
@@ -75,7 +79,8 @@ async function codingNode(state: typeof planGraphState.State) {
 
 async function verificationNode(state: typeof planGraphState.State) {
 
-    console.log("verification started....")
+    console.log(chalk.yellow("\n Verification started....  \n"));
+
 
     const response = await verificationAgent.invoke({
         messages: state.plan

@@ -10,10 +10,10 @@ import { HumanMessage } from "langchain";
 
 const MAX_FIX_ATTEMPTS = 3;
 
-const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-});
+// const rl = readline.createInterface({
+//     input: process.stdin,
+//     output: process.stdout
+// });
 
 async function classifyNode(state: typeof yoloGraphState.State) {
     const response = await checkIntent.invoke({
@@ -52,7 +52,7 @@ async function phaseGenerationNode(state: typeof yoloGraphState.State) {
         const answer = interrupt(
             "Please answer the clarification questions above in a single response."
         );
-        const query = await rl.question("You: ");
+        // query = await rl.question("You: ");
 
 
         finalPrompt = `
@@ -65,7 +65,7 @@ Clarification questions:
 ${state.questions}
 
 User answers:
-${query}
+// 
 
 Use ALL of this information to generate clear phases.
 `;

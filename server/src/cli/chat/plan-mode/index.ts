@@ -4,6 +4,7 @@ import { Command } from "@langchain/langgraph";
 import readline from "node:readline/promises";
 import { stateWithInterrupt, StreamMessage } from "../../../types";
 import { planGraph } from "./graphs";
+import chalk from "chalk";
 
 
 export async function PlanMode() {
@@ -72,7 +73,7 @@ export async function PlanMode() {
             if (_result) {
                 interrupts.push(_result[0])
                 // take user input then reinvoke graph
-                console.log("\n\nAI: ", _result[0]?.value)
+                console.log(chalk.yellow("\n\nAI: ", _result[0]?.value ));
             }
 
             if (eventType === 'custom') {

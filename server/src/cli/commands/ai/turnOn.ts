@@ -11,26 +11,27 @@ import { PhasesMode } from "../../chat/phases-mode";
 
 
 const wakeUpAction = async () => {
-    const token = await getStoredToken();
+    // const token = await getStoredToken();
 
-    if (!token?.access_token) {
-        console.log(chalk.red("Not authenticated. Please login."));
-        return;
-    }
+    // if (!token?.access_token) {
+    //     console.log(chalk.red("Not authenticated. Please login."));
+    //     return;
+    // }
 
-    const spinner = yoctoSpinner({ text: "Fetching User Information..." });
-    spinner.start();
+    // const spinner = yoctoSpinner({ text: "Fetching User Information..." });
+    // spinner.start();
 
-    const user = await findFirst(token?.access_token);
+    // const user = await findFirst(token?.access_token);
 
-    spinner.stop();
+    // spinner.stop();
 
-    if (!user) {
-        console.log(chalk.red("User not found."));
-        return;
-    }
+    // if (!user) {
+    //     console.log(chalk.red("User not found."));
+    //     return;
+    // }
 
-    console.log(chalk.green(`\nWelcome back, ${user.name}!\n`));
+    // console.log(chalk.green(`\nWelcome back, ${user.name}!\n`));
+     console.log(chalk.green(`\nHello 👋🏽!\n`));
 
     const choice = await select({
         message: "Select an option:",
@@ -41,14 +42,14 @@ const wakeUpAction = async () => {
                 hint: "Direct, step-by-step implementation for single-PR tasks",
             },
             {
-                value: "Phases Mode",
-                label: "Phases",
-                hint: "Structured, multi-phase development for complex projects. Break goals into iterative phases with validation between steps.",
-            },
-            {
                 value: "Review Mode",
                 label: "Review",
                 hint: "Agentic code review with thorough exploration and analysis.",
+            },
+            {
+                value: "Phases Mode",
+                label: "Phases",
+                hint: "Structured, multi-phase development for complex projects. Break goals into iterative phases with validation between steps.",
             },
         ],
     });
@@ -57,11 +58,11 @@ const wakeUpAction = async () => {
         case "Plan Mode":
             await PlanMode();
             break;
-        case "Phases Mode":
-            await PhasesMode();
-            break;
         case "Review Mode":
             await ReviewMode();
+            break;
+        case "Phases Mode":
+            await PhasesMode();
             break;
     }
 };

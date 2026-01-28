@@ -7,9 +7,11 @@ export const groq = new ChatGroq({
     streaming: true,
 });
 
+//'openai/gpt-5-pro',
+//openai/gpt-5.2-codex
 
 export const llm = new ChatOpenAI({
-    model: 'anthropic/claude-haiku-4.5',
+    model: 'openai/gpt-5.2',
     configuration: {
         apiKey: process.env.OPENROUTER_API_KEY,
         baseURL: process.env.OPENROUTER_BASE_URL,
@@ -17,7 +19,7 @@ export const llm = new ChatOpenAI({
 });
 
 export const model = new ChatOpenAI({
-    model: 'anthropic/claude-haiku-4.5',
+    model: 'openai/gpt-5.2',
     configuration: {
         apiKey: process.env.OPENROUTER_API_KEY,
         baseURL: process.env.OPENROUTER_BASE_URL,
