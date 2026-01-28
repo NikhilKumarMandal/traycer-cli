@@ -37,7 +37,7 @@ async function codingNode(state: typeof planGraphState.State) {
 
     if (!state.verification) {
         inputMessages = [
-            ...state.plan!,
+            state.plan,
             {
                 role: "system",
                 content: "MODE: IMPLEMENT THE PLAN ABOVE EXACTLY"

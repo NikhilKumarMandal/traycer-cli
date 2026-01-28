@@ -42,14 +42,14 @@ const wakeUpAction = async () => {
                 hint: "Direct, step-by-step implementation for single-PR tasks",
             },
             {
-                value: "Phases Mode",
-                label: "Phases",
-                hint: "Structured, multi-phase development for complex projects. Break goals into iterative phases with validation between steps.",
-            },
-            {
                 value: "Review Mode",
                 label: "Review",
                 hint: "Agentic code review with thorough exploration and analysis.",
+            },
+            {
+                value: "Phases Mode",
+                label: "Phases",
+                hint: "Structured, multi-phase development for complex projects. Break goals into iterative phases with validation between steps.",
             },
         ],
     });
@@ -58,11 +58,11 @@ const wakeUpAction = async () => {
         case "Plan Mode":
             await PlanMode();
             break;
-        case "Phases Mode":
-            await PhasesMode();
-            break;
         case "Review Mode":
             await ReviewMode();
+            break;
+        case "Phases Mode":
+            await PhasesMode();
             break;
     }
 };

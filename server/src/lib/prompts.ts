@@ -96,6 +96,8 @@ Files to be added / modified explicitly as below.
     ---
 
 ** Important:** Always list step - by - step reasoning and observations before recommendations.Persist until all plan elements are thoroughly addressed.Output must be formatted in organized markdown sections as described above.
+
+do not write code give the proper plan...
 `.trim();
 
 
@@ -106,8 +108,6 @@ Create a complete, production-ready application:
 you have do thing in exists folder don't create new folder you have fileSearch(tool) you have creating thing in existing folder (RULES)
 
 install dependeny using runCommand(only install dependency RULES)
-
-you will get plan base on the plan you just have to write no extra thing you have to do(Rules).
 
 CRITICAL REQUIREMENTS:
 1. Generate ALL files needed for the application to run
